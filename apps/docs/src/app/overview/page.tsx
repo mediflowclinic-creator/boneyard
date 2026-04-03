@@ -68,13 +68,7 @@ function StaticHeroDemo() {
         {/* Real UI column */}
         <div>
           <div className="text-[10px] font-medium text-stone-400 uppercase tracking-wide mb-2">Real UI</div>
-          <Skeleton
-            name="overview-dashboard"
-            loading={false}
-            fixture={<DashboardMock />}
-          >
-            <DashboardMock />
-          </Skeleton>
+          <DashboardMock />
         </div>
 
         {/* Skeleton column — same component, forced loading */}

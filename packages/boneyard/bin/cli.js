@@ -237,10 +237,17 @@ async function capturePage(pageUrl) {
 
       const elements = document.querySelectorAll('[data-boneyard]')
       const results = {}
+      const duplicates = []
 
       for (const el of elements) {
         const name = el.getAttribute('data-boneyard')
         if (!name) continue
+
+        // Only capture the first occurrence of each name — duplicates are skipped
+        if (results[name]) {
+          duplicates.push(name)
+          continue
+        }
 
         // Read snapshotConfig from data attribute
         const configStr = el.getAttribute('data-boneyard-config')
@@ -257,8 +264,21 @@ async function capturePage(pageUrl) {
         }
       }
 
+      // Surface duplicate names so the user can fix them
+      if (duplicates.length > 0) {
+        results.__duplicates = [...new Set(duplicates)]
+      }
+
       return results
     })
+
+    // Warn about duplicate skeleton names
+    if (bones.__duplicates) {
+      for (const dup of bones.__duplicates) {
+        console.log(`    ⚠  Duplicate name "${dup}" — only the first occurrence was captured`)
+      }
+      delete bones.__duplicates
+    }
 
     const names = Object.keys(bones)
 
@@ -351,6 +371,25 @@ if (Object.keys(collected).length === 0) {
     '  so boneyard can snapshot them before the CLI reads the registry.\n'
   )
   process.exit(1)
+}
+
+// ── Validate bones before writing ────────────────────────────────────────────
+let hasWarnings = false
+for (const [name, data] of Object.entries(collected)) {
+  for (const [bp, result] of Object.entries(data.breakpoints)) {
+    const bones = result.bones
+    if (!bones || bones.length === 0) continue
+    const maxRight = Math.max(...bones.map(b => b.x + b.w))
+    if (maxRight < 50) {
+      if (!hasWarnings) {
+        console.log(`\n  \x1b[33m⚠  Bone coverage warnings:\x1b[0m`)
+        hasWarnings = true
+      }
+      console.log(`     "${name}" at ${bp}px: bones only cover ${maxRight.toFixed(0)}% of container width`)
+      console.log(`     This usually means the skeleton was captured from a container wider than its content.`)
+      console.log(`     Check that the element rendered inside <Skeleton name="${name}"> fills its container.\n`)
+    }
+  }
 }
 
 const outputDir = resolve(process.cwd(), outDir)

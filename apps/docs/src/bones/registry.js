@@ -16,6 +16,17 @@ import _kanban from './kanban.bones.json'
 import _files from './files.bones.json'
 import _progress from './progress.bones.json'
 import _servers from './servers.bones.json'
+import _test_profile from './test-profile.bones.json'
+import _test_pricing from './test-pricing.bones.json'
+import _test_notifications from './test-notifications.bones.json'
+import _test_form from './test-form.bones.json'
+import _test_gallery from './test-gallery.bones.json'
+import _test_timeline from './test-timeline.bones.json'
+import _test_comments from './test-comments.bones.json'
+import _test_tags from './test-tags.bones.json'
+import _test_player from './test-player.bones.json'
+import _test_metrics from './test-metrics.bones.json'
+import _test_nav from './test-nav.bones.json'
 
 registerBones({
   "overview-dashboard": _overview_dashboard,
@@ -32,4 +43,15 @@ registerBones({
   "files": _files,
   "progress": _progress,
   "servers": _servers,
+  "test-profile": _test_profile,
+  "test-pricing": _test_pricing,
+  "test-notifications": _test_notifications,
+  "test-form": _test_form,
+  "test-gallery": _test_gallery,
+  "test-timeline": _test_timeline,
+  "test-comments": _test_comments,
+  "test-tags": _test_tags,
+  "test-player": _test_player,
+  "test-metrics": _test_metrics,
+  "test-nav": _test_nav,
 })

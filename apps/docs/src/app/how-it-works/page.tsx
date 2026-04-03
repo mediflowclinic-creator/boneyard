@@ -86,9 +86,9 @@ function SkeletonCard() {
               key={i}
               className="bone absolute"
               style={{
-                left: b.x,
+                left: `${b.x}%`,
                 top: b.y,
-                width: b.w,
+                width: `${b.w}%`,
                 height: b.h,
                 borderRadius: typeof b.r === "string" ? b.r : `${b.r}px`,
               }}
